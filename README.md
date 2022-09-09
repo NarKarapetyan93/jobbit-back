@@ -45,11 +45,3 @@ HR companies will have the opportunity to place announcements of their partner c
 #### For HR/Recruiter/Talent Acquisition Specialists:
 
 #### For HR agencies:
-
-
-## Main Colors
-- ![#726776](https://via.placeholder.com/15/726776/000000?text=+)`#726776`
-- ![#B68290](https://via.placeholder.com/15/B68290/000000?text=+)`#B68290`
-- ![#E4989E](https://via.placeholder.com/15/E4989E/000000?text=+)`#E4989E`
-- ![#FEB4A1](https://via.placeholder.com/15/FEB4A1/000000?text=+)`#FEB4A1`
-- ![#FFCEB3](https://via.placeholder.com/15/FFCEB3/000000?text=+)`#FFCEB3`
