@@ -1,18 +1,18 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type UserDocument = User & Document;
+export type CompanyDocument = Company & Document;
 
 @Schema()
-export class User {
+export class Company {
   @Prop()
   _id: string;
 
   @Prop({ required: true })
-  firstname: string;
+  name: string;
 
-  @Prop({ required: true })
-  lastname: string;
+  @Prop({ default: null })
+  about: string;
 
   @Prop({ default: null })
   avatar: string;
@@ -30,4 +30,4 @@ export class User {
   isVerified: boolean;
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const CompanySchema = SchemaFactory.createForClass(Company);

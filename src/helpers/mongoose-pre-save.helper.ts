@@ -1,13 +1,11 @@
 import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserSchema } from '../schemas/user.schema';
 import * as bcrypt from 'bcrypt';
 
-export const UserMongooseModuleHelper = () => {
+export const MongoosePreSaveHelper = (model, schema) => {
   return MongooseModule.forFeatureAsync([
     {
-      name: User.name,
+      name: model.name,
       useFactory: () => {
-        const schema = UserSchema;
         schema.pre('save', async function (next) {
           if (!this.isModified('password')) return next();
           try {

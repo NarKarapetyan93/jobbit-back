@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
-import { UserMongooseModuleHelper } from '../helpers/userMongooseModule.helper';
+import { User, UserSchema } from '../schemas/user.schema';
+import { MongoosePreSaveHelper } from '../helpers/mongoose-pre-save.helper';
 
 @Module({
-  imports: [UserMongooseModuleHelper()],
+  imports: [MongoosePreSaveHelper(User, UserSchema)],
   controllers: [UsersController],
   providers: [UsersService],
 })

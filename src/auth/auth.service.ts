@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from '../users/dto/create-user.dto';
+import { AuthDto } from '../common/dto/auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,19 +15,6 @@ export class AuthService {
     private usersService: UsersService,
     private jwtTokenService: JwtService,
   ) {}
-
-  async validateUser(username: string, password: string): Promise<any> {
-    const user = await this.usersService.findByEmail(username);
-    if (!user) {
-      throw new BadRequestException('User does not exists');
-    }
-    const isValidPassword = await bcrypt.compare(password, user.password);
-    if (!isValidPassword) {
-      throw new BadRequestException('Password is incorrect');
-    }
-    const { password: dbPass, ...result } = user;
-    return result;
-  }
 
   async register(data: CreateUserDto) {
     const user = await this.usersService.create(data);
@@ -38,12 +26,21 @@ export class AuthService {
     return tokens;
   }
 
-  async login(user: any) {
-    const payload = { username: user._doc.email, sub: user._doc._id };
+  async login(data: AuthDto) {
+    const user = await this.usersService.findByEmail(data.email);
+    if (!user) throw new BadRequestException('User does not exist');
+    const passwordMatches = await bcrypt.compare(data.password, user.password);
+    if (!passwordMatches)
+      throw new BadRequestException('Password is incorrect');
+    const tokens = await this.getTokens({
+      username: user.email,
+      sub: user._id,
+    });
+    await this.updateRefreshToken(user._id, tokens.refreshToken);
 
-    const tokens = await this.getTokens(payload);
-    await this.updateRefreshToken(user._doc._id, tokens.refreshToken);
-    return tokens;
+    const { password, ...userDetails } = user;
+
+    return { ...userDetails, ...tokens };
   }
 
   async logout(userId: string) {
